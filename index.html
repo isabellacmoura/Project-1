@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colouring the path</title>
+  <link rel="icon" href="dh1.png" type="image/png">
+
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+<style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e3bf66;
+            color: #2c2c2c;
+            font-size: 38px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Página de título */
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+        
+        .title-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: auto auto auto;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .title-main {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            font-size: clamp(60px, 8vw, 120px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #4180c5;
+            margin: 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .title-main::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 3px;
+            background-color: #d32f2f;
+        }
+        
+        .title-left {
+            grid-column: 1;
+            grid-row: 2;
+            font-size: clamp(40px, 5vw, 80px);
+            font-weight: 900;
+            color: #2c2c2c;
+            text-align: right;
+            margin: 0;
+        }
+        
+        .title-center {
+            grid-column: 2;
+            grid-row: 2;
+            font-size: clamp(12px, 1.2vw, 16px);
+            line-height: 1.4;
+            color: #333;
+            text-align: left;
+            padding: 0 20px;
+            font-weight: 400;
+        }
+        
+        .title-right {
+            grid-column: 3;
+            grid-row: 2;
+            font-size: 30px;
+            font-weight: 900;
+            color: #2c2c2c;
+            text-align: left;
+            margin: 0;
+        }
+        
+        .title-credits {
+            grid-column: 2;
+            grid-row: 3;
+            font-size: clamp(10px, 1vw, 12px);
+            color: #666;
+            text-align: left;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+        
+        .title-credits a {
+            color: #333;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        
+        .title-credits div {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .title-layout {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .title-main {
+                grid-column: 1;
+            }
+            
+            .title-left,
+            .title-center,
+            .title-right,
+            .title-credits {
+                grid-column: 1;
+                text-align: center;
+            }
+            
+            .title-center,
+            .title-credits {
+                padding: 0;
+            }
+        }
+
+    iframe,
+    img,
+    video {
+      max-width: 100%;
+    }
+        
+        /* Página de conteúdo */
+        .content-page {
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        
+        p {
+            text-align: justify;
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .subtitle-section {
+        background-color: transparent;
+        text-align: center;
+        padding: 40px 20px;
+        margin: 0;
+        }
+
+        .subtitle-section h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+        }
+
+        .white-box {
+        background-color: white;
+        padding: 20px 132px;
+        border-radius: 1px;
+        font-size: 20px;
+        color: #2c2c2c;  
+        margin-bottom: 50px; 
+        }
+
+        .objects-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        margin: 40px 0;
+        flex-wrap: wrap;
+        }
+
+        .object-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .object-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .object-image {
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .object-image:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+       /* notes */
+        .side-note {
+            position: absolute;
+            width: 120px;
+            font-size: 11px;
+            line-height: 1.3;
+            color: #f5f3f3;
+            text-align: justify;
+        }
+        
+        .side-note-left {
+            left: -130px;
+        }
+        
+        .side-note-right {
+            right: -130px;
+        }
+        
+        .note-1 {
+            top: 110px;
+        }
+        
+        .note-2 {
+            top: 200px;
+        }
+        
+        .note-3 {
+            top: 300px;
+        }
+        
+        /* margin on mobile */
+        @media (max-width: 1200px) {
+            .side-note {
+                position: static;
+                width: 100%;
+                margin: 15px 0;
+                padding: 10px;
+                background-color: #f5f5f5;
+                border-left: 3px solid #ccc;
+                font-size: 10px;
+            }
+        }
+        
+        .note-marker {
+            color: #666;
+            font-size: 8px;
+            vertical-align: super;
+        }    
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-gallery a {
+            display: block;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            max-width: 50px;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 2px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .image-gallery a:hover img {
+        transform: scale(5); 
+        z-index: 10;
+     }
+
+    </style>
+<body>
+    <div class="title-page">
+        <div class="title-layout">
+            <h1 class="title-main">DAVID HOCKNEY</h1>
+            <h2 class="title-left">IN</h2>
+            <div class="title-center">
+                David Hockney is one of Britain's greatest artists, and his work stands out for its vivid colors, typical of modernism, and also for the dimensional power of his flat creations. This study analyzed more than 400 works available on the author's website. But what ultimately characterizes David Hockney's work? Fans would say: the colors, and anyone, even those unfamiliar with his work, would agree.
+            </div>
+            <h2 class="title-right">PERSPECTIVE</h2>
+            <div class="title-credits">
+                <div>BY <a href="#">ISABELLA MOURA</a></div>
+            <div class="objects-container">
+                <div class="object-item">
+                    <img src="dh1.png" alt="Objeto 1" class="object-image">
+                </div>
+                <div class="object-item">
+                    <img src="dh1.png" alt="Objeto 2" class="object-image">
+                </div>
+                <div class="object-item">
+                    <img src="dh1.png" alt="Objeto 3" class="object-image">
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-page">
+        <div class="container">
+        <!-- left 1 -->
+        <div class="side-note side-note-left note-1">
+            <strong><span style="background-color: #f3937d; padding: 2px 5px; border-radius: 1px;">1950s, the first paintings</span></strong><br>
+            Hockney has explored many techniques over more than seven decades of work. Where has he landed?
+        </div>
+        
+        <!--righ 1 -->
+        <div class="side-note side-note-right note-2">
+            <strong><span style="background-color: #4180c5; padding: 2px 5px; border-radius: 1px;">California in the 1960s</span></strong><br>
+            The 1960s and 1970s marked the artist's consecration, with paintings such as Portrait of an Artist (Pool with Two Figures), 1972, and A Bigger Splash, 1967.
+        </div>
+        
+        <!-- left 2-->
+        <div class="side-note side-note-left note-3">
+            <strong><span style="background-color: #f3937d; padding: 2px 5px; border-radius: 1px;">The 2000s, the digital age</span></strong><br>
+            He started with a computer, tried the iPhone, but it was the iPad that gave him comfort.
+        </div>
+        
+<div class="main-content white-box">
+    <h1>Zoom out to understand the artwork</h1>
+    <p>People are sitting down to have their portraits taken, which is very common in David Hockney's work. He likes chairs and benches, and loves to show that the portraits are being taken of people who are sitting down. Hockney's work is vast, spanning more than seven decades, and continues to be added to in the current decade. </p>
+    <p>But portraits are not unique and characteristic of his estate; we cannot forget the vases, plants, and flowers, the trees, mountains, and roads... ah, the swimming pools.</p>
+    <p>Exploring the artist's various phases necessarily implies understanding that there was experimentation and adaptation. The decades and techniques are a journey of color and motif. It is not possible to reduce the colors to the whole of his work, but we can try to approximate it. Therefore, we will increase the scope and zoom out on his work.</p>
+</div>
+
+</div>
+<div class="image-gallery">
+    <a href="palettes/palette_0010.png" target="_blank"><img src="palettes/palette_0010.png" alt="img 1"></a>
+    <a href="palettes/palette_0021.png" target="_blank"><img src="palettes/palette_0021.png" alt="img 2"></a>
+    <a href="palettes/palette_0041.png" target="_blank"><img src="palettes/palette_0041.png" alt="img 3"></a>
+    <a href="palettes/palette_0045.png" target="_blank"><img src="palettes/palette_0045.png" alt="img 4"></a>
+    <a href="palettes/palette_0061.png" target="_blank"><img src="palettes/palette_0061.png" alt="img 5"></a>
+    <a href="palettes/palette_0065.png" target="_blank"><img src="palettes/palette_0065.png" alt="img 6"></a>
+    <a href="palettes/palette_0067.png" target="_blank"><img src="palettes/palette_0067.png" alt="img 7"></a>
+    <a href="palettes/palette_0068.png" target="_blank"><img src="palettes/palette_0068.png" alt="img 8"></a>
+    <a href="palettes/palette_0072.png" target="_blank"><img src="palettes/palette_0072.png" alt="img 9"></a>
+    <a href="palettes/palette_0083.png" target="_blank"><img src="palettes/palette_0083.png" alt="img 10"></a>
+    <a href="palettes/palette_0088.png" target="_blank"><img src="palettes/palette_0088.png" alt="img 11"></a>
+    <a href="palettes/palette_0091.png" target="_blank"><img src="palettes/palette_0091.png" alt="img 12"></a>
+    <a href="palettes/palette_00G03.png" target="_blank"><img src="palettes/palette_00G03.png" alt="img 13"></a>
+    <a href="palettes/palette_00G06.png" target="_blank"><img src="palettes/palette_00G06.png" alt="img 14"></a>
+    <a href="palettes/palette_01-0622.png" target="_blank"><img src="palettes/palette_01-0622.png" alt="img 15"></a>
+    <a href="palettes/palette_01-1326.png" target="_blank"><img src="palettes/palette_01-1326.png" alt="img 16"></a>
+    <a href="palettes/palette_0102.png" target="_blank"><img src="palettes/palette_0102.png" alt="img 17"></a>
+    <a href="palettes/palette_0121.png" target="_blank"><img src="palettes/palette_0121.png" alt="img 18"></a>
+    <a href="palettes/palette_0143.png" target="_blank"><img src="palettes/palette_0143.png" alt="img 19"></a>
+    <a href="palettes/palette_0144.png" target="_blank"><img src="palettes/palette_0144.png" alt="img 20"></a>
+    <a href="palettes/palette_0145.png" target="_blank"><img src="palettes/palette_0145.png" alt="img 21"></a>
+    <a href="palettes/palette_0148.png" target="_blank"><img src="palettes/palette_0148.png" alt="img 22"></a>
+    <a href="palettes/palette_0151.png" target="_blank"><img src="palettes/palette_0151.png" alt="img 23"></a>
+    <a href="palettes/palette_0156.png" target="_blank"><img src="palettes/palette_0156.png" alt="img 24"></a>
+    <a href="palettes/palette_0160.png" target="_blank"><img src="palettes/palette_0160.png" alt="img 25"></a>
+    <a href="palettes/palette_0161.png" target="_blank"><img src="palettes/palette_0161.png" alt="img 26"></a>
+    <a href="palettes/palette_0162.png" target="_blank"><img src="palettes/palette_0162.png" alt="img 27"></a>
+    <a href="palettes/palette_0165.png" target="_blank"><img src="palettes/palette_0165.png" alt="img 28"></a>
+    <a href="palettes/palette_0168.png" target="_blank"><img src="palettes/palette_0168.png" alt="img 29"></a>
+    <a href="palettes/palette_0175.png" target="_blank"><img src="palettes/palette_0175.png" alt="img 30"></a>
+    <a href="palettes/palette_0177.png" target="_blank"><img src="palettes/palette_0177.png" alt="img 31"></a>
+    <a href="palettes/palette_0180.png" target="_blank"><img src="palettes/palette_0180.png" alt="img 32"></a>
+    <a href="palettes/palette_0181.png" target="_blank"><img src="palettes/palette_0181.png" alt="img 33"></a>
+    <a href="palettes/palette_0182.png" target="_blank"><img src="palettes/palette_0182.png" alt="img 34"></a>
+    <a href="palettes/palette_0188.png" target="_blank"><img src="palettes/palette_0188.png" alt="img 35"></a>
+    <a href="palettes/palette_0190-2.png" target="_blank"><img src="palettes/palette_0190-2.png" alt="img 36"></a>
+    <a href="palettes/palette_0191.png" target="_blank"><img src="palettes/palette_0191.png" alt="img 37"></a>
+    <a href="palettes/palette_0196.png" target="_blank"><img src="palettes/palette_0196.png" alt="img 38"></a>
+    <a href="palettes/palette_02-1116.png" target="_blank"><img src="palettes/palette_02-1116.png" alt="img 39"></a>
+    <a href="palettes/palette_02-1147.png" target="_blank"><img src="palettes/palette_02-1147.png" alt="img 40"></a>
+    <a href="palettes/palette_0210.png" target="_blank"><img src="palettes/palette_0210.png" alt="img 41"></a>
+    <a href="palettes/palette_0224.png" target="_blank"><img src="palettes/palette_0224.png" alt="img 42"></a>
+    <a href="palettes/palette_0239.png" target="_blank"><img src="palettes/palette_0239.png" alt="img 43"></a>
+    <a href="palettes/palette_0242.png" target="_blank"><img src="palettes/palette_0242.png" alt="img 44"></a>
+    <a href="palettes/palette_0258.png" target="_blank"><img src="palettes/palette_0258.png" alt="img 45"></a>
+    <a href="palettes/palette_0263.png" target="_blank"><img src="palettes/palette_0263.png" alt="img 46"></a>
+    <a href="palettes/palette_0268.png" target="_blank"><img src="palettes/palette_0268.png" alt="img 47"></a>
+    <a href="palettes/palette_0278.png" target="_blank"><img src="palettes/palette_0278.png" alt="img 48"></a>
+    <a href="palettes/palette_0291_25_08_2010.png" target="_blank"><img src="palettes/palette_0291_25_08_2010.png" alt="img 49"></a>
+    <a href="palettes/palette_0297.png" target="_blank"><img src="palettes/palette_0297.png" alt="img 50"></a>
+    <a href="palettes/palette_0298.png" target="_blank"><img src="palettes/palette_0298.png" alt="img 51"></a>
+    <a href="palettes/palette_02R30.png" target="_blank"><img src="palettes/palette_02R30.png" alt="img 52"></a>
+    <a href="palettes/palette_02U05.png" target="_blank"><img src="palettes/palette_02U05.png" alt="img 53"></a>
+    <a href="palettes/palette_02U19.png" target="_blank"><img src="palettes/palette_02U19.png" alt="img 54"></a>
+    <a href="palettes/palette_03-0623.png" target="_blank"><img src="palettes/palette_03-0623.png" alt="img 55"></a>
+    <a href="palettes/palette_03-1124.png" target="_blank"><img src="palettes/palette_03-1124.png" alt="img 56"></a>
+    <a href="palettes/palette_0311.png" target="_blank"><img src="palettes/palette_0311.png" alt="img 57"></a>
+    <a href="palettes/palette_0336_13_08_2010.png" target="_blank"><img src="palettes/palette_0336_13_08_2010.png" alt="img 58"></a>
+    <a href="palettes/palette_0353.png" target="_blank"><img src="palettes/palette_0353.png" alt="img 59"></a>
+    <a href="palettes/palette_0357.png" target="_blank"><img src="palettes/palette_0357.png" alt="img 60"></a>
+    <a href="palettes/palette_0365.png" target="_blank"><img src="palettes/palette_0365.png" alt="img 61"></a>
+    <a href="palettes/palette_0382.png" target="_blank"><img src="palettes/palette_0382.png" alt="img 62"></a>
+    <a href="palettes/palette_0383.png" target="_blank"><img src="palettes/palette_0383.png" alt="img 63"></a>
+    <a href="palettes/palette_0392.png" target="_blank"><img src="palettes/palette_0392.png" alt="img 64"></a>
+    <a href="palettes/palette_0395.png" target="_blank"><img src="palettes/palette_0395.png" alt="img 65"></a>
+    <a href="palettes/palette_0396.png" target="_blank"><img src="palettes/palette_0396.png" alt="img 66"></a>
+    <a href="palettes/palette_0397.png" target="_blank"><img src="palettes/palette_0397.png" alt="img 67"></a>
+    <a href="palettes/palette_0398.png" target="_blank"><img src="palettes/palette_0398.png" alt="img 68"></a>
+    <a href="palettes/palette_0399.png" target="_blank"><img src="palettes/palette_0399.png" alt="img 69"></a>
+    <a href="palettes/palette_03A32.png" target="_blank"><img src="palettes/palette_03A32.png" alt="img 70"></a>
+    <a href="palettes/palette_03C31.png" target="_blank"><img src="palettes/palette_03C31.png" alt="img 71"></a>
+    <a href="palettes/palette_04-0619.png" target="_blank"><img src="palettes/palette_04-0619.png" alt="img 72"></a>
+    <a href="palettes/palette_04-1147.png" target="_blank"><img src="palettes/palette_04-1147.png" alt="img 73"></a>
+    <a href="palettes/palette_0400.png" target="_blank"><img src="palettes/palette_0400.png" alt="img 74"></a>
+    <a href="palettes/palette_0401.png" target="_blank"><img src="palettes/palette_0401.png" alt="img 75"></a>
+    <a href="palettes/palette_0408.png" target="_blank"><img src="palettes/palette_0408.png" alt="img 76"></a>
+    <a href="palettes/palette_0409.png" target="_blank"><img src="palettes/palette_0409.png" alt="img 77"></a>
+    <a href="palettes/palette_0410.png" target="_blank"><img src="palettes/palette_0410.png" alt="img 78"></a>
+    <a href="palettes/palette_0411.png" target="_blank"><img src="palettes/palette_0411.png" alt="img 79"></a>
+    <a href="palettes/palette_0413.png" target="_blank"><img src="palettes/palette_0413.png" alt="img 80"></a>
+    <a href="palettes/palette_0415.png" target="_blank"><img src="palettes/palette_0415.png" alt="img 81"></a>
+    <a href="palettes/palette_0416.png" target="_blank"><img src="palettes/palette_0416.png" alt="img 82"></a>
+    <a href="palettes/palette_0418.png" target="_blank"><img src="palettes/palette_0418.png" alt="img 83"></a>
+    <a href="palettes/palette_0419.png" target="_blank"><img src="palettes/palette_0419.png" alt="img 84"></a>
+    <a href="palettes/palette_0420.png" target="_blank"><img src="palettes/palette_0420.png" alt="img 85"></a>
+    <a href="palettes/palette_0422.png" target="_blank"><img src="palettes/palette_0422.png" alt="img 86"></a>
+    <a href="palettes/palette_0424.png" target="_blank"><img src="palettes/palette_0424.png" alt="img 87"></a>
+    <a href="palettes/palette_0428.png" target="_blank"><img src="palettes/palette_0428.png" alt="img 88"></a>
+    <a href="palettes/palette_0429.png" target="_blank"><img src="palettes/palette_0429.png" alt="img 89"></a>
+    <a href="palettes/palette_0430.png" target="_blank"><img src="palettes/palette_0430.png" alt="img 90"></a>
+    <a href="palettes/palette_0434.png" target="_blank"><img src="palettes/palette_0434.png" alt="img 91"></a>
+    <a href="palettes/palette_0435.png" target="_blank"><img src="palettes/palette_0435.png" alt="img 92"></a>
+    <a href="palettes/palette_0436.png" target="_blank"><img src="palettes/palette_0436.png" alt="img 93"></a>
+    <a href="palettes/palette_0440.png" target="_blank"><img src="palettes/palette_0440.png" alt="img 94"></a>
+    <a href="palettes/palette_0452.png" target="_blank"><img src="palettes/palette_0452.png" alt="img 95"></a>
+    <a href="palettes/palette_0453.png" target="_blank"><img src="palettes/palette_0453.png" alt="img 96"></a>
+    <a href="palettes/palette_0455.png" target="_blank"><img src="palettes/palette_0455.png" alt="img 97"></a>
+    <a href="palettes/palette_0456.png" target="_blank"><img src="palettes/palette_0456.png" alt="img 98"></a>
+    <a href="palettes/palette_0465.png" target="_blank"><img src="palettes/palette_0465.png" alt="img 99"></a>
+    <a href="palettes/palette_0468.png" target="_blank"><img src="palettes/palette_0468.png" alt="img 100"></a>
+    <a href="palettes/palette_0469.png" target="_blank"><img src="palettes/palette_0469.png" alt="img 101"></a>
+    <a href="palettes/palette_0470.png" target="_blank"><img src="palettes/palette_0470.png" alt="img 102"></a>
+    <a href="palettes/palette_0471.png" target="_blank"><img src="palettes/palette_0471.png" alt="img 103"></a>
+    <a href="palettes/palette_0474.png" target="_blank"><img src="palettes/palette_0474.png" alt="img 104"></a>
+    <a href="palettes/palette_0493.png" target="_blank"><img src="palettes/palette_0493.png" alt="img 105"></a>
+    <a href="palettes/palette_0494.png" target="_blank"><img src="palettes/palette_0494.png" alt="img 106"></a>
+    <a href="palettes/palette_0495.png" target="_blank"><img src="palettes/palette_0495.png" alt="img 107"></a>
+    <a href="palettes/palette_0496.png" target="_blank"><img src="palettes/palette_0496.png" alt="img 108"></a>
+    <a href="palettes/palette_0497.png" target="_blank"><img src="palettes/palette_0497.png" alt="img 109"></a>
+    <a href="palettes/palette_0498.png" target="_blank"><img src="palettes/palette_0498.png" alt="img 110"></a>
+    <a href="palettes/palette_04A06.png" target="_blank"><img src="palettes/palette_04A06.png" alt="img 111"></a>
+    <a href="palettes/palette_05-0630.png" target="_blank"><img src="palettes/palette_05-0630.png" alt="img 112"></a>
+    <a href="palettes/palette_05-0661.png" target="_blank"><img src="palettes/palette_05-0661.png" alt="img 113"></a>
+    <a href="palettes/palette_0510.png" target="_blank"><img src="palettes/palette_0510.png" alt="img 114"></a>
+    <a href="palettes/palette_0512.png" target="_blank"><img src="palettes/palette_0512.png" alt="img 115"></a>
+    <a href="palettes/palette_0521.png" target="_blank"><img src="palettes/palette_0521.png" alt="img 116"></a>
+    <a href="palettes/palette_0522.png" target="_blank"><img src="palettes/palette_0522.png" alt="img 117"></a>
+    <a href="palettes/palette_0577.png" target="_blank"><img src="palettes/palette_0577.png" alt="img 118"></a>
+    <a href="palettes/palette_0580.png" target="_blank"><img src="palettes/palette_0580.png" alt="img 119"></a>
+    <a href="palettes/palette_0589.png" target="_blank"><img src="palettes/palette_0589.png" alt="img 120"></a>
+    <a href="palettes/palette_0592.png" target="_blank"><img src="palettes/palette_0592.png" alt="img 121"></a>
+    <a href="palettes/palette_05A31.png" target="_blank"><img src="palettes/palette_05A31.png" alt="img 122"></a>
+    <a href="palettes/palette_05A32.png" target="_blank"><img src="palettes/palette_05A32.png" alt="img 123"></a>
+    <a href="palettes/palette_06-0687.png" target="_blank"><img src="palettes/palette_06-0687.png" alt="img 124"></a>
+    <a href="palettes/palette_06-0742.png" target="_blank"><img src="palettes/palette_06-0742.png" alt="img 125"></a>
+    <a href="palettes/palette_0607.png" target="_blank"><img src="palettes/palette_0607.png" alt="img 126"></a>
+    <a href="palettes/palette_0609.png" target="_blank"><img src="palettes/palette_0609.png" alt="img 127"></a>
+    <a href="palettes/palette_0610.png" target="_blank"><img src="palettes/palette_0610.png" alt="img 128"></a>
+    <a href="palettes/palette_0621.png" target="_blank"><img src="palettes/palette_0621.png" alt="img 129"></a>
+    <a href="palettes/palette_0632.png" target="_blank"><img src="palettes/palette_0632.png" alt="img 130"></a>
+    <a href="palettes/palette_0642.png" target="_blank"><img src="palettes/palette_0642.png" alt="img 131"></a>
+    <a href="palettes/palette_0643.png" target="_blank"><img src="palettes/palette_0643.png" alt="img 132"></a>
+    <a href="palettes/palette_0644.png" target="_blank"><img src="palettes/palette_0644.png" alt="img 133"></a>
+    <a href="palettes/palette_0651.png" target="_blank"><img src="palettes/palette_0651.png" alt="img 134"></a>
+    <a href="palettes/palette_0654.png" target="_blank"><img src="palettes/palette_0654.png" alt="img 135"></a>
+    <a href="palettes/palette_0655.png" target="_blank"><img src="palettes/palette_0655.png" alt="img 136"></a>
+    <a href="palettes/palette_0656.png" target="_blank"><img src="palettes/palette_0656.png" alt="img 137"></a>
+    <a href="palettes/palette_0684.png" target="_blank"><img src="palettes/palette_0684.png" alt="img 138"></a>
+    <a href="palettes/palette_0691.png" target="_blank"><img src="palettes/palette_0691.png" alt="img 139"></a>
+    <a href="palettes/palette_06A11.png" target="_blank"><img src="palettes/palette_06A11.png" alt="img 140"></a>
+    <a href="palettes/palette_06A15.png" target="_blank"><img src="palettes/palette_06A15.png" alt="img 141"></a>
+    <a href="palettes/palette_06A23.png" target="_blank"><img src="palettes/palette_06A23.png" alt="img 142"></a>
+    <a href="palettes/palette_06A26.png" target="_blank"><img src="palettes/palette_06A26.png" alt="img 143"></a>
+    <a href="palettes/palette_06A35.png" target="_blank"><img src="palettes/palette_06A35.png" alt="img 144"></a>
+    <a href="palettes/palette_07-0647.png" target="_blank"><img src="palettes/palette_07-0647.png" alt="img 145"></a>
+    <a href="palettes/palette_07-0839.png" target="_blank"><img src="palettes/palette_07-0839.png" alt="img 146"></a>
+    <a href="palettes/palette_0701.png" target="_blank"><img src="palettes/palette_0701.png" alt="img 147"></a>
+    <a href="palettes/palette_0705.png" target="_blank"><img src="palettes/palette_0705.png" alt="img 148"></a>
+    <a href="palettes/palette_0712.png" target="_blank"><img src="palettes/palette_0712.png" alt="img 149"></a>
+    <a href="palettes/palette_0714.png" target="_blank"><img src="palettes/palette_0714.png" alt="img 150"></a>
+    <a href="palettes/palette_0739.png" target="_blank"><img src="palettes/palette_0739.png" alt="img 151"></a>
+    <a href="palettes/palette_0743.png" target="_blank"><img src="palettes/palette_0743.png" alt="img 152"></a>
+    <a href="palettes/palette_0753.png" target="_blank"><img src="palettes/palette_0753.png" alt="img 153"></a>
+    <a href="palettes/palette_0772.png" target="_blank"><img src="palettes/palette_0772.png" alt="img 154"></a>
+    <a href="palettes/palette_0776.png" target="_blank"><img src="palettes/palette_0776.png" alt="img 155"></a>
+    <a href="palettes/palette_0780.png" target="_blank"><img src="palettes/palette_0780.png" alt="img 156"></a>
+    <a href="palettes/palette_0791.png" target="_blank"><img src="palettes/palette_0791.png" alt="img 157"></a>
+    <a href="palettes/palette_07A04.png" target="_blank"><img src="palettes/palette_07A04.png" alt="img 158"></a>
+    <a href="palettes/palette_07A05.png" target="_blank"><img src="palettes/palette_07A05.png" alt="img 159"></a>
+    <a href="palettes/palette_08-0661.png" target="_blank"><img src="palettes/palette_08-0661.png" alt="img 160"></a>
+    <a href="palettes/palette_08-0853.png" target="_blank"><img src="palettes/palette_08-0853.png" alt="img 161"></a>
+    <a href="palettes/palette_0810.png" target="_blank"><img src="palettes/palette_0810.png" alt="img 162"></a>
+    <a href="palettes/palette_0820.png" target="_blank"><img src="palettes/palette_0820.png" alt="img 163"></a>
+    <a href="palettes/palette_0822.png" target="_blank"><img src="palettes/palette_0822.png" alt="img 164"></a>
+    <a href="palettes/palette_0829.png" target="_blank"><img src="palettes/palette_0829.png" alt="img 165"></a>
+    <a href="palettes/palette_0852.png" target="_blank"><img src="palettes/palette_0852.png" alt="img 166"></a>
+    <a href="palettes/palette_0863.png" target="_blank"><img src="palettes/palette_0863.png" alt="img 167"></a>
+    <a href="palettes/palette_0878.png" target="_blank"><img src="palettes/palette_0878.png" alt="img 168"></a>
+    <a href="palettes/palette_0883.png" target="_blank"><img src="palettes/palette_0883.png" alt="img 169"></a>
+    <a href="palettes/palette_0888.png" target="_blank"><img src="palettes/palette_0888.png" alt="img 170"></a>
+    <a href="palettes/palette_0894.png" target="_blank"><img src="palettes/palette_0894.png" alt="img 171"></a>
+    <a href="palettes/palette_08A01.png" target="_blank"><img src="palettes/palette_08A01.png" alt="img 172"></a>
+    <a href="palettes/palette_08A08.png" target="_blank"><img src="palettes/palette_08A08.png" alt="img 173"></a>
+    <a href="palettes/palette_08A09.png" target="_blank"><img src="palettes/palette_08A09.png" alt="img 174"></a>
+    <a href="palettes/palette_08A13.png" target="_blank"><img src="palettes/palette_08A13.png" alt="img 175"></a>
+    <a href="palettes/palette_08A16.png" target="_blank"><img src="palettes/palette_08A16.png" alt="img 176"></a>
+    <a href="palettes/palette_09-0688.png" target="_blank"><img src="palettes/palette_09-0688.png" alt="img 177"></a>
+    <a href="palettes/palette_09-0873.png" target="_blank"><img src="palettes/palette_09-0873.png" alt="img 178"></a>
+    <a href="palettes/palette_0910.png" target="_blank"><img src="palettes/palette_0910.png" alt="img 179"></a>
+    <a href="palettes/palette_0913.png" target="_blank"><img src="palettes/palette_0913.png" alt="img 180"></a>
+    <a href="palettes/palette_0917.png" target="_blank"><img src="palettes/palette_0917.png" alt="img 181"></a>
+    <a href="palettes/palette_0918.png" target="_blank"><img src="palettes/palette_0918.png" alt="img 182"></a>
+    <a href="palettes/palette_0922.png" target="_blank"><img src="palettes/palette_0922.png" alt="img 183"></a>
+    <a href="palettes/palette_0938.png" target="_blank"><img src="palettes/palette_0938.png" alt="img 184"></a>
+    <a href="palettes/palette_0955.png" target="_blank"><img src="palettes/palette_0955.png" alt="img 185"></a>
+    <a href="palettes/palette_0966.png" target="_blank"><img src="palettes/palette_0966.png" alt="img 186"></a>
+    <a href="palettes/palette_0977.png" target="_blank"><img src="palettes/palette_0977.png" alt="img 187"></a>
+    <a href="palettes/palette_0978.png" target="_blank"><img src="palettes/palette_0978.png" alt="img 188"></a>
+    <a href="palettes/palette_0998.png" target="_blank"><img src="palettes/palette_0998.png" alt="img 189"></a>
+    <a href="palettes/palette_09A03.png" target="_blank"><img src="palettes/palette_09A03.png" alt="img 190"></a>
+    <a href="palettes/palette_09A12.png" target="_blank"><img src="palettes/palette_09A12.png" alt="img 191"></a>
+    <a href="palettes/palette_09A13.png" target="_blank"><img src="palettes/palette_09A13.png" alt="img 192"></a>
+    <a href="palettes/palette_10-0698.png" target="_blank"><img src="palettes/palette_10-0698.png" alt="img 193"></a>
+    <a href="palettes/palette_10-1160.png" target="_blank"><img src="palettes/palette_10-1160.png" alt="img 194"></a>
+    <a href="palettes/palette_1000.png" target="_blank"><img src="palettes/palette_1000.png" alt="img 195"></a>
+    <a href="palettes/palette_1022.png" target="_blank"><img src="palettes/palette_1022.png" alt="img 196"></a>
+    <a href="palettes/palette_1025.png" target="_blank"><img src="palettes/palette_1025.png" alt="img 197"></a>
+    <a href="palettes/palette_1029.png" target="_blank"><img src="palettes/palette_1029.png" alt="img 198"></a>
+    <a href="palettes/palette_1030.png" target="_blank"><img src="palettes/palette_1030.png" alt="img 199"></a>
+    <a href="palettes/palette_1031.png" target="_blank"><img src="palettes/palette_1031.png" alt="img 200"></a>
+    <a href="palettes/palette_1037.png" target="_blank"><img src="palettes/palette_1037.png" alt="img 201"></a>
+    <a href="palettes/palette_1059.png" target="_blank"><img src="palettes/palette_1059.png" alt="img 202"></a>
+    <a href="palettes/palette_1062.png" target="_blank"><img src="palettes/palette_1062.png" alt="img 203"></a>
+    <a href="palettes/palette_1063.png" target="_blank"><img src="palettes/palette_1063.png" alt="img 204"></a>
+    <a href="palettes/palette_1067.png" target="_blank"><img src="palettes/palette_1067.png" alt="img 205"></a>
+    <a href="palettes/palette_1072.png" target="_blank"><img src="palettes/palette_1072.png" alt="img 206"></a>
+    <a href="palettes/palette_1094.png" target="_blank"><img src="palettes/palette_1094.png" alt="img 207"></a>
+    <a href="palettes/palette_10A02.png" target="_blank"><img src="palettes/palette_10A02.png" alt="img 208"></a>
+    <a href="palettes/palette_10A10.png" target="_blank"><img src="palettes/palette_10A10.png" alt="img 209"></a>
+    <a href="palettes/palette_10A17.png" target="_blank"><img src="palettes/palette_10A17.png" alt="img 210"></a>
+    <a href="palettes/palette_10A18.png" target="_blank"><img src="palettes/palette_10A18.png" alt="img 211"></a>
+    <a href="palettes/palette_11-0700.png" target="_blank"><img src="palettes/palette_11-0700.png" alt="img 212"></a>
+    <a href="palettes/palette_11-0900.png" target="_blank"><img src="palettes/palette_11-0900.png" alt="img 213"></a>
+    <a href="palettes/palette_1159.png" target="_blank"><img src="palettes/palette_1159.png" alt="img 214"></a>
+    <a href="palettes/palette_1193.png" target="_blank"><img src="palettes/palette_1193.png" alt="img 215"></a>
+    <a href="palettes/palette_11A03.png" target="_blank"><img src="palettes/palette_11A03.png" alt="img 216"></a>
+    <a href="palettes/palette_12-0711.png" target="_blank"><img src="palettes/palette_12-0711.png" alt="img 217"></a>
+    <a href="palettes/palette_12-0903.png" target="_blank"><img src="palettes/palette_12-0903.png" alt="img 218"></a>
+    <a href="palettes/palette_1201.png" target="_blank"><img src="palettes/palette_1201.png" alt="img 219"></a>
+    <a href="palettes/palette_1219.png" target="_blank"><img src="palettes/palette_1219.png" alt="img 220"></a>
+    <a href="palettes/palette_1231.png" target="_blank"><img src="palettes/palette_1231.png" alt="img 221"></a>
+    <a href="palettes/palette_13-0721.png" target="_blank"><img src="palettes/palette_13-0721.png" alt="img 222"></a>
+    <a href="palettes/palette_13C09.png" target="_blank"><img src="palettes/palette_13C09.png" alt="img 223"></a>
+    <a href="palettes/palette_13C18.png" target="_blank"><img src="palettes/palette_13C18.png" alt="img 224"></a>
+    <a href="palettes/palette_14-0728.png" target="_blank"><img src="palettes/palette_14-0728.png" alt="img 225"></a>
+    <a href="palettes/palette_14A10.png" target="_blank"><img src="palettes/palette_14A10.png" alt="img 226"></a>
+    <a href="palettes/palette_14A26.png" target="_blank"><img src="palettes/palette_14A26.png" alt="img 227"></a>
+    <a href="palettes/palette_14A36.png" target="_blank"><img src="palettes/palette_14A36.png" alt="img 228"></a>
+    <a href="palettes/palette_14B03.png" target="_blank"><img src="palettes/palette_14B03.png" alt="img 229"></a>
+    <a href="palettes/palette_14B07.png" target="_blank"><img src="palettes/palette_14B07.png" alt="img 230"></a>
+    <a href="palettes/palette_14B08.png" target="_blank"><img src="palettes/palette_14B08.png" alt="img 231"></a>
+    <a href="palettes/palette_14B09.png" target="_blank"><img src="palettes/palette_14B09.png" alt="img 232"></a>
+    <a href="palettes/palette_14B14.png" target="_blank"><img src="palettes/palette_14B14.png" alt="img 233"></a>
+    <a href="palettes/palette_14B17.png" target="_blank"><img src="palettes/palette_14B17.png" alt="img 234"></a>
+    <a href="palettes/palette_14B19.png" target="_blank"><img src="palettes/palette_14B19.png" alt="img 235"></a>
+    <a href="palettes/palette_14B20.png" target="_blank"><img src="palettes/palette_14B20.png" alt="img 236"></a>
+    <a href="palettes/palette_14B21.png" target="_blank"><img src="palettes/palette_14B21.png" alt="img 237"></a>
+    <a href="palettes/palette_15-1144.png" target="_blank"><img src="palettes/palette_15-1144.png" alt="img 238"></a>
+    <a href="palettes/palette_15A01.png" target="_blank"><img src="palettes/palette_15A01.png" alt="img 239"></a>
+    <a href="palettes/palette_15A08.png" target="_blank"><img src="palettes/palette_15A08.png" alt="img 240"></a>
+    <a href="palettes/palette_15A09.png" target="_blank"><img src="palettes/palette_15A09.png" alt="img 241"></a>
+    <a href="palettes/palette_15A12.png" target="_blank"><img src="palettes/palette_15A12.png" alt="img 242"></a>
+    <a href="palettes/palette_15A17.png" target="_blank"><img src="palettes/palette_15A17.png" alt="img 243"></a>
+    <a href="palettes/palette_16-0731.png" target="_blank"><img src="palettes/palette_16-0731.png" alt="img 244"></a>
+    <a href="palettes/palette_16B01.png" target="_blank"><img src="palettes/palette_16B01.png" alt="img 245"></a>
+    <a href="palettes/palette_17-0724.png" target="_blank"><img src="palettes/palette_17-0724.png" alt="img 246"></a>
+    <a href="palettes/palette_17A01.png" target="_blank"><img src="palettes/palette_17A01.png" alt="img 247"></a>
+    <a href="palettes/palette_17A02.png" target="_blank"><img src="palettes/palette_17A02.png" alt="img 248"></a>
+    <a href="palettes/palette_17A03.png" target="_blank"><img src="palettes/palette_17A03.png" alt="img 249"></a>
+    <a href="palettes/palette_17A04.png" target="_blank"><img src="palettes/palette_17A04.png" alt="img 250"></a>
+    <a href="palettes/palette_17A05.png" target="_blank"><img src="palettes/palette_17A05.png" alt="img 251"></a>
+    <a href="palettes/palette_18-0736.png" target="_blank"><img src="palettes/palette_18-0736.png" alt="img 252"></a>
+    <a href="palettes/palette_19-0735.png" target="_blank"><img src="palettes/palette_19-0735.png" alt="img 253"></a>
+    <a href="palettes/palette_20-0742.png" target="_blank"><img src="palettes/palette_20-0742.png" alt="img 254"></a>
+    <a href="palettes/palette_21-0748.png" target="_blank"><img src="palettes/palette_21-0748.png" alt="img 255"></a>
+    <a href="palettes/palette_22-0746.png" target="_blank"><img src="palettes/palette_22-0746.png" alt="img 256"></a>
+    <a href="palettes/palette_23-0762.png" target="_blank"><img src="palettes/palette_23-0762.png" alt="img 257"></a>
+    <a href="palettes/palette_24-0765.png" target="_blank"><img src="palettes/palette_24-0765.png" alt="img 258"></a>
+    <a href="palettes/palette_25-0768.png" target="_blank"><img src="palettes/palette_25-0768.png" alt="img 259"></a>
+    <a href="palettes/palette_26-0773.png" target="_blank"><img src="palettes/palette_26-0773.png" alt="img 260"></a>
+    <a href="palettes/palette_27-0782.png" target="_blank"><img src="palettes/palette_27-0782.png" alt="img 261"></a>
+    <a href="palettes/palette_29-0793.png" target="_blank"><img src="palettes/palette_29-0793.png" alt="img 262"></a>
+    <a href="palettes/palette_30-0789.png" target="_blank"><img src="palettes/palette_30-0789.png" alt="img 263"></a>
+    <a href="palettes/palette_31-0797.png" target="_blank"><img src="palettes/palette_31-0797.png" alt="img 264"></a>
+    <a href="palettes/palette_32-0808.png" target="_blank"><img src="palettes/palette_32-0808.png" alt="img 265"></a>
+    <a href="palettes/palette_33-0811.png" target="_blank"><img src="palettes/palette_33-0811.png" alt="img 266"></a>
+    <a href="palettes/palette_34-0815.png" target="_blank"><img src="palettes/palette_34-0815.png" alt="img 267"></a>
+    <a href="palettes/palette_35-0827.png" target="_blank"><img src="palettes/palette_35-0827.png" alt="img 268"></a>
+    <a href="palettes/palette_36-0839.png" target="_blank"><img src="palettes/palette_36-0839.png" alt="img 269"></a>
+    <a href="palettes/palette_37-0838.png" target="_blank"><img src="palettes/palette_37-0838.png" alt="img 270"></a>
+    <a href="palettes/palette_38-0845.png" target="_blank"><img src="palettes/palette_38-0845.png" alt="img 271"></a>
+    <a href="palettes/palette_40-0853.png" target="_blank"><img src="palettes/palette_40-0853.png" alt="img 272"></a>
+    <a href="palettes/palette_41-0858.png" target="_blank"><img src="palettes/palette_41-0858.png" alt="img 273"></a>
+    <a href="palettes/palette_42-0870.png" target="_blank"><img src="palettes/palette_42-0870.png" alt="img 274"></a>
+    <a href="palettes/palette_43-0873.png" target="_blank"><img src="palettes/palette_43-0873.png" alt="img 275"></a>
+    <a href="palettes/palette_44-0875.png" target="_blank"><img src="palettes/palette_44-0875.png" alt="img 276"></a>
+    <a href="palettes/palette_45-0877.png" target="_blank"><img src="palettes/palette_45-0877.png" alt="img 277"></a>
+    <a href="palettes/palette_46-0879.png" target="_blank"><img src="palettes/palette_46-0879.png" alt="img 278"></a>
+    <a href="palettes/palette_47-0885.png" target="_blank"><img src="palettes/palette_47-0885.png" alt="img 279"></a>
+    <a href="palettes/palette_48-1160.png" target="_blank"><img src="palettes/palette_48-1160.png" alt="img 280"></a>
+    <a href="palettes/palette_49-0900.png" target="_blank"><img src="palettes/palette_49-0900.png" alt="img 281"></a>
+    <a href="palettes/palette_50-0868.png" target="_blank"><img src="palettes/palette_50-0868.png" alt="img 282"></a>
+    <a href="palettes/palette_51-0903.png" target="_blank"><img src="palettes/palette_51-0903.png" alt="img 283"></a>
+    <a href="palettes/palette_51A01.png" target="_blank"><img src="palettes/palette_51A01.png" alt="img 284"></a>
+    <a href="palettes/palette_51A02.png" target="_blank"><img src="palettes/palette_51A02.png" alt="img 285"></a>
+    <a href="palettes/palette_53A01.png" target="_blank"><img src="palettes/palette_53A01.png" alt="img 286"></a>
+    <a href="palettes/palette_54A13.png" target="_blank"><img src="palettes/palette_54A13.png" alt="img 287"></a>
+    <a href="palettes/palette_55A01.png" target="_blank"><img src="palettes/palette_55A01.png" alt="img 288"></a>
+    <a href="palettes/palette_55A04.png" target="_blank"><img src="palettes/palette_55A04.png" alt="img 289"></a>
+    <a href="palettes/palette_55A06.png" target="_blank"><img src="palettes/palette_55A06.png" alt="img 290"></a>
+    <a href="palettes/palette_55A08.png" target="_blank"><img src="palettes/palette_55A08.png" alt="img 291"></a>
+    <a href="palettes/palette_56A01.png" target="_blank"><img src="palettes/palette_56A01.png" alt="img 292"></a>
+    <a href="palettes/palette_56A11.png" target="_blank"><img src="palettes/palette_56A11.png" alt="img 293"></a>
+    <a href="palettes/palette_56A12.png" target="_blank"><img src="palettes/palette_56A12.png" alt="img 294"></a>
+    <a href="palettes/palette_56A13.png" target="_blank"><img src="palettes/palette_56A13.png" alt="img 295"></a>
+    <a href="palettes/palette_56A21.png" target="_blank"><img src="palettes/palette_56A21.png" alt="img 296"></a>
+    <a href="palettes/palette_57A19.png" target="_blank"><img src="palettes/palette_57A19.png" alt="img 297"></a>
+    <a href="palettes/palette_57A25.png" target="_blank"><img src="palettes/palette_57A25.png" alt="img 298"></a>
+    <a href="palettes/palette_57A26.png" target="_blank"><img src="palettes/palette_57A26.png" alt="img 299"></a>
+    <a href="palettes/palette_57A29.png" target="_blank"><img src="palettes/palette_57A29.png" alt="img 300"></a>
+    <a href="palettes/palette_57A34.png" target="_blank"><img src="palettes/palette_57A34.png" alt="img 301"></a>
+    <a href="palettes/palette_57A38.png" target="_blank"><img src="palettes/palette_57A38.png" alt="img 302"></a>
+    <a href="palettes/palette_60A37.png" target="_blank"><img src="palettes/palette_60A37.png" alt="img 303"></a>
+    <a href="palettes/palette_60B02.png" target="_blank"><img src="palettes/palette_60B02.png" alt="img 304"></a>
+    <a href="palettes/palette_61A42.png" target="_blank"><img src="palettes/palette_61A42.png" alt="img 305"></a>
+    <a href="palettes/palette_61B04.png" target="_blank"><img src="palettes/palette_61B04.png" alt="img 306"></a>
+    <a href="palettes/palette_61B07.png" target="_blank"><img src="palettes/palette_61B07.png" alt="img 307"></a>
+    <a href="palettes/palette_61B13.png" target="_blank"><img src="palettes/palette_61B13.png" alt="img 308"></a>
+    <a href="palettes/palette_62A13.png" target="_blank"><img src="palettes/palette_62A13.png" alt="img 309"></a>
+    <a href="palettes/palette_63A18.png" target="_blank"><img src="palettes/palette_63A18.png" alt="img 310"></a>
+    <a href="palettes/palette_63A37.png" target="_blank"><img src="palettes/palette_63A37.png" alt="img 311"></a>
+    <a href="palettes/palette_64A30.png" target="_blank"><img src="palettes/palette_64A30.png" alt="img 312"></a>
+    <a href="palettes/palette_64A31.png" target="_blank"><img src="palettes/palette_64A31.png" alt="img 313"></a>
+    <a href="palettes/palette_64A32.png" target="_blank"><img src="palettes/palette_64A32.png" alt="img 314"></a>
+    <a href="palettes/palette_64A34.png" target="_blank"><img src="palettes/palette_64A34.png" alt="img 315"></a>
+    <a href="palettes/palette_66B18.png" target="_blank"><img src="palettes/palette_66B18.png" alt="img 316"></a>
+    <a href="palettes/palette_66B21.png" target="_blank"><img src="palettes/palette_66B21.png" alt="img 317"></a>
+    <a href="palettes/palette_66B24.png" target="_blank"><img src="palettes/palette_66B24.png" alt="img 318"></a>
+    <a href="palettes/palette_67A01.png" target="_blank"><img src="palettes/palette_67A01.png" alt="img 319"></a>
+    <a href="palettes/palette_67A33.png" target="_blank"><img src="palettes/palette_67A33.png" alt="img 320"></a>
+    <a href="palettes/palette_67A34.png" target="_blank"><img src="palettes/palette_67A34.png" alt="img 321"></a>
+    <a href="palettes/palette_68A21.png" target="_blank"><img src="palettes/palette_68A21.png" alt="img 322"></a>
+    <a href="palettes/palette_70A34.png" target="_blank"><img src="palettes/palette_70A34.png" alt="img 323"></a>
+    <a href="palettes/palette_71A17.png" target="_blank"><img src="palettes/palette_71A17.png" alt="img 324"></a>
+    <a href="palettes/palette_71A19.png" target="_blank"><img src="palettes/palette_71A19.png" alt="img 325"></a>
+    <a href="palettes/palette_71A21.png" target="_blank"><img src="palettes/palette_71A21.png" alt="img 326"></a>
+    <a href="palettes/palette_72A25.png" target="_blank"><img src="palettes/palette_72A25.png" alt="img 327"></a>
+    <a href="palettes/palette_72A27.png" target="_blank"><img src="palettes/palette_72A27.png" alt="img 328"></a>
+    <a href="palettes/palette_72A33.png" target="_blank"><img src="palettes/palette_72A33.png" alt="img 329"></a>
+    <a href="palettes/palette_73B06.png" target="_blank"><img src="palettes/palette_73B06.png" alt="img 330"></a>
+    <a href="palettes/palette_74B01.png" target="_blank"><img src="palettes/palette_74B01.png" alt="img 331"></a>
+    <a href="palettes/palette_74D37.png" target="_blank"><img src="palettes/palette_74D37.png" alt="img 332"></a>
+    <a href="palettes/palette_75C04.png" target="_blank"><img src="palettes/palette_75C04.png" alt="img 333"></a>
+    <a href="palettes/palette_75C05.png" target="_blank"><img src="palettes/palette_75C05.png" alt="img 334"></a>
+    <a href="palettes/palette_77B34.png" target="_blank"><img src="palettes/palette_77B34.png" alt="img 335"></a>
+    <a href="palettes/palette_77B35.png" target="_blank"><img src="palettes/palette_77B35.png" alt="img 336"></a>
+    <a href="palettes/palette_77B36.png" target="_blank"><img src="palettes/palette_77B36.png" alt="img 337"></a>
+    <a href="palettes/palette_77B37.png" target="_blank"><img src="palettes/palette_77B37.png" alt="img 338"></a>
+    <a href="palettes/palette_78C34.png" target="_blank"><img src="palettes/palette_78C34.png" alt="img 339"></a>
+    <a href="palettes/palette_78C35.png" target="_blank"><img src="palettes/palette_78C35.png" alt="img 340"></a>
+    <a href="palettes/palette_79G35.png" target="_blank"><img src="palettes/palette_79G35.png" alt="img 341"></a>
+    <a href="palettes/palette_79G38.png" target="_blank"><img src="palettes/palette_79G38.png" alt="img 342"></a>
+    <a href="palettes/palette_80A34.png" target="_blank"><img src="palettes/palette_80A34.png" alt="img 343"></a>
+    <a href="palettes/palette_80A37.png" target="_blank"><img src="palettes/palette_80A37.png" alt="img 344"></a>
+    <a href="palettes/palette_82A21.png" target="_blank"><img src="palettes/palette_82A21.png" alt="img 345"></a>
+    <a href="palettes/palette_82B26.png" target="_blank"><img src="palettes/palette_82B26.png" alt="img 346"></a>
+    <a href="palettes/palette_84G30.png" target="_blank"><img src="palettes/palette_84G30.png" alt="img 347"></a>
+    <a href="palettes/palette_84H05.png" target="_blank"><img src="palettes/palette_84H05.png" alt="img 348"></a>
+    <a href="palettes/palette_84H06.png" target="_blank"><img src="palettes/palette_84H06.png" alt="img 349"></a>
+    <a href="palettes/palette_85A04.png" target="_blank"><img src="palettes/palette_85A04.png" alt="img 350"></a>
+    <a href="palettes/palette_85A05.png" target="_blank"><img src="palettes/palette_85A05.png" alt="img 351"></a>
+    <a href="palettes/palette_87J04.png" target="_blank"><img src="palettes/palette_87J04.png" alt="img 352"></a>
+    <a href="palettes/palette_88A36.png" target="_blank"><img src="palettes/palette_88A36.png" alt="img 353"></a>
+    <a href="palettes/palette_88B13.png" target="_blank"><img src="palettes/palette_88B13.png" alt="img 354"></a>
+    <a href="palettes/palette_88B15.png" target="_blank"><img src="palettes/palette_88B15.png" alt="img 355"></a>
+    <a href="palettes/palette_88B16.png" target="_blank"><img src="palettes/palette_88B16.png" alt="img 356"></a>
+    <a href="palettes/palette_88B25.png" target="_blank"><img src="palettes/palette_88B25.png" alt="img 357"></a>
+    <a href="palettes/palette_88B30.png" target="_blank"><img src="palettes/palette_88B30.png" alt="img 358"></a>
+    <a href="palettes/palette_88D01.png" target="_blank"><img src="palettes/palette_88D01.png" alt="img 359"></a>
+    <a href="palettes/palette_88D02.png" target="_blank"><img src="palettes/palette_88D02.png" alt="img 360"></a>
+    <a href="palettes/palette_89B12.png" target="_blank"><img src="palettes/palette_89B12.png" alt="img 361"></a>
+    <a href="palettes/palette_89N35.png" target="_blank"><img src="palettes/palette_89N35.png" alt="img 362"></a>
+    <a href="palettes/palette_90C03.png" target="_blank"><img src="palettes/palette_90C03.png" alt="img 363"></a>
+    <a href="palettes/palette_90C04.png" target="_blank"><img src="palettes/palette_90C04.png" alt="img 364"></a>
+    <a href="palettes/palette_90E10.png" target="_blank"><img src="palettes/palette_90E10.png" alt="img 365"></a>
+    <a href="palettes/palette_90E16.png" target="_blank"><img src="palettes/palette_90E16.png" alt="img 366"></a>
+    <a href="palettes/palette_91D03.png" target="_blank"><img src="palettes/palette_91D03.png" alt="img 367"></a>
+    <a href="palettes/palette_91D04.png" target="_blank"><img src="palettes/palette_91D04.png" alt="img 368"></a>
+    <a href="palettes/palette_91D19.png" target="_blank"><img src="palettes/palette_91D19.png" alt="img 369"></a>
+    <a href="palettes/palette_92A09.png" target="_blank"><img src="palettes/palette_92A09.png" alt="img 370"></a>
+    <a href="palettes/palette_92A35.png" target="_blank"><img src="palettes/palette_92A35.png" alt="img 371"></a>
+    <a href="palettes/palette_93B01.png" target="_blank"><img src="palettes/palette_93B01.png" alt="img 372"></a>
+    <a href="palettes/palette_95C14.png" target="_blank"><img src="palettes/palette_95C14.png" alt="img 373"></a>
+    <a href="palettes/palette_95F14.png" target="_blank"><img src="palettes/palette_95F14.png" alt="img 374"></a>
+    <a href="palettes/palette_96B09.png" target="_blank"><img src="palettes/palette_96B09.png" alt="img 375"></a>
+    <a href="palettes/palette_96B12.png" target="_blank"><img src="palettes/palette_96B12.png" alt="img 376"></a>
+    <a href="palettes/palette_96B13-2.png" target="_blank"><img src="palettes/palette_96B13-2.png" alt="img 377"></a>
+    <a href="palettes/palette_96B28.png" target="_blank"><img src="palettes/palette_96B28.png" alt="img 378"></a>
+    <a href="palettes/palette_96B41.png" target="_blank"><img src="palettes/palette_96B41.png" alt="img 379"></a>
+    <a href="palettes/palette_97A07.png" target="_blank"><img src="palettes/palette_97A07.png" alt="img 380"></a>
+    <a href="palettes/palette_97A10.png" target="_blank"><img src="palettes/palette_97A10.png" alt="img 381"></a>
+    <a href="palettes/palette_97A29.png" target="_blank"><img src="palettes/palette_97A29.png" alt="img 382"></a>
+    <a href="palettes/palette_C.D.-053.png" target="_blank"><img src="palettes/palette_C.D.-053.png" alt="img 383"></a>
+    <a href="palettes/palette_C.D.-054.png" target="_blank"><img src="palettes/palette_C.D.-054.png" alt="img 384"></a>
+    <a href="palettes/palette_C.D.-055.png" target="_blank"><img src="palettes/palette_C.D.-055.png" alt="img 385"></a>
+    <a href="palettes/palette_C.D.-056.png" target="_blank"><img src="palettes/palette_C.D.-056.png" alt="img 386"></a>
+    <a href="palettes/palette_C.D.-057.png" target="_blank"><img src="palettes/palette_C.D.-057.png" alt="img 387"></a>
+    <a href="palettes/palette_C.D.-058.png" target="_blank"><img src="palettes/palette_C.D.-058.png" alt="img 388"></a>
+    <a href="palettes/palette_C.D.-061.png" target="_blank"><img src="palettes/palette_C.D.-061.png" alt="img 389"></a>
+    <a href="palettes/palette_C.D.-062.png" target="_blank"><img src="palettes/palette_C.D.-062.png" alt="img 390"></a>
+    <a href="palettes/palette_C.D.-063.png" target="_blank"><img src="palettes/palette_C.D.-063.png" alt="img 391"></a>
+    <a href="palettes/palette_C.D.-064.png" target="_blank"><img src="palettes/palette_C.D.-064.png" alt="img 392"></a>
+    <a href="palettes/palette_C.D.-065.png" target="_blank"><img src="palettes/palette_C.D.-065.png" alt="img 393"></a>
+    <a href="palettes/palette_C.D.-066.png" target="_blank"><img src="palettes/palette_C.D.-066.png" alt="img 394"></a>
+    <a href="palettes/palette_C.D.-067.png" target="_blank"><img src="palettes/palette_C.D.-067.png" alt="img 395"></a>
+    <a href="palettes/palette_C.D.-068.png" target="_blank"><img src="palettes/palette_C.D.-068.png" alt="img 396"></a>
+    <a href="palettes/palette_C.D.-069.png" target="_blank"><img src="palettes/palette_C.D.-069.png" alt="img 397"></a>
+    <a href="palettes/palette_C.D.-070.png" target="_blank"><img src="palettes/palette_C.D.-070.png" alt="img 398"></a>
+    <a href="palettes/palette_C.D.-071.png" target="_blank"><img src="palettes/palette_C.D.-071.png" alt="img 399"></a>
+    <a href="palettes/palette_C.D.-072.png" target="_blank"><img src="palettes/palette_C.D.-072.png" alt="img 400"></a>
+    <a href="palettes/palette_C.D.-073.png" target="_blank"><img src="palettes/palette_C.D.-073.png" alt="img 401"></a>
+    <a href="palettes/palette_C.D.-074.png" target="_blank"><img src="palettes/palette_C.D.-074.png" alt="img 402"></a>
+    <a href="palettes/palette_C.D.-075.png" target="_blank"><img src="palettes/palette_C.D.-075.png" alt="img 403"></a>
+    <a href="palettes/palette_C.D.-076.png" target="_blank"><img src="palettes/palette_C.D.-076.png" alt="img 404"></a>
+    <a href="palettes/palette_C.D.-077.png" target="_blank"><img src="palettes/palette_C.D.-077.png" alt="img 405"></a>
+    <a href="palettes/palette_C.D.-078.png" target="_blank"><img src="palettes/palette_C.D.-078.png" alt="img 406"></a>
+    <a href="palettes/palette_C.D.-079.png" target="_blank"><img src="palettes/palette_C.D.-079.png" alt="img 407"></a>
+    <a href="palettes/palette_C.D.-080.png" target="_blank"><img src="palettes/palette_C.D.-080.png" alt="img 408"></a>
+    <a href="palettes/palette_C.D.-081.png" target="_blank"><img src="palettes/palette_C.D.-081.png" alt="img 409"></a>
+    <a href="palettes/palette_C.D.-084.png" target="_blank"><img src="palettes/palette_C.D.-084.png" alt="img 410"></a>
+    <a href="palettes/palette_PD17large.png" target="_blank"><img src="palettes/palette_PD17large.png" alt="img 411"></a>
+    <a href="palettes/palette_PD26-large.png" target="_blank"><img src="palettes/palette_PD26-large.png" alt="img 412"></a>
+</div>
+
+<div class="content-page">
+  <link href="scrolly-styles.css" rel="stylesheet">
+  <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+</head>
+
+<body>
+
+<div class="main-content white-box">
+    <h1>Now let's get closer</h1>
+    <p>Hockney's collection of paintings in traditional techniques follows the same logic as his digital work, which in 2010 found a new medium in the iPad. The colors vary and blend together. We still know it is a work by David Hockney, but we are surprised by so many layers of color. Here we explore and invite you to explore: David Hockney's color palettes, first through the combination of traditional techniques for each decade, and then, in the late 2000s and early 2010s, the shift to digital. </p>
+</div>
+
+
+  <section id="scrolly-images" class="scrolly-container">
+    <div class="sticky-thing">
+      <img src="image1.png">
+    </div>
+    <div class="steps-container">
+      <div class="step" id="step1">
+        <div>
+          <p>As much as we can demonstrate that Hockney used many palettes throughout his career, it is possible to look at a set and assume: yes, these are his colors (without excluding all others).</p>
+        </div>
+      </div>
+      <div class="step" id="step2">
+        <p>We ventured to associate, in color clusters, the main shades used by the painter in the sample of 412 pieces. This was the result.</p>
+      </div>
+      <div class="step" id="step3">
+        <p>All 3x3 squares, with the palettes from the analyzed set, follow this hierarchy pattern. Here is the second most used color.
+        </p>
+      </div>
+      <div class="step" id="step4">
+        <p>Here is the third, and so on.</p>
+      </div>
+      <div class="step" id="step5">
+        <p>These were the 9 most used colors, and they form the color pallet of the entire set analyzed.</p>
+      </div>
+    <div class="step" id="step6">
+        <p>Variation in colors used using traditional techniques, such as paper, canvas, board, and plywood, over the decades.</p>
+      </div>
+    <div class="step" id="step7">
+      <p>The painted motifs shape the palette.</p>
+
+      </div>
+    <div class="step" id="step8">
+      <p>Although some colors are always present, there are variations in shade and a clear pattern for each decade.</p>
+      </div>
+    <div class="step" id="step9">
+      <p>At the end of the 2000s, Hockney fully embraced digital production.</p>
+      </div>
+    <div class="step" id="step10">
+      <p>The computer and iPhone marked the experimental phase, but it was on the iPad that he found a way to continue his work.</p>
+    </div>
+    <div class="step" id="step11">
+      <p>Depicting landscapes strongly influenced the color green as the most used. Hockney made digital series dedicated to Woldgate (a rural area in Yorkshire, northern England, where the painter lived) and Yosemite (California National Park).</p>
+    </div>
+      </div>
+
+</div> 
+  </section>
+<div class="main-content white-box">
+    <h1>The blue and the pools</h1>
+    <p>In the 1960s, the painter moved to Los Angeles, and during that decade and the following one, Hockney's work was influenced by swimming pools and references to water. The painter's works associated with this period became a marker of his style and are considered his most important creations.  The painting “Portrait Of The Artist (Pool With Two Figures), 1972” was sold in 2018 for $90.3 million.
+The online catalog, however, leaves no room for doubt: it is marked by the preference in recent years for addressing nature, with an emphasis on trees, mountains, and paths. </p>
+</div>
+
+
+
+<div class="content-page">
+  <div class="main-content">
+    <div class="white-box">
+      <h1><span style="background-color: #4180c5; padding: 2px 5px; border-radius: 1px;">Methodology</span></h1>
+      <p>
+        Data access: Using the BeautifulSoup library, images of Hockney's works were taken from the painter's personal archive, available at https://www.hockney.com/. This information was then organized into a data table by title, year, format, and image link. We used KMeans to classify images and group colors into clusters, and matplotlib to visually create the color palette, which was saved locally.
+      </p>
+      <p>
+        Analysis and visualization: With the palettes created, KMeans created the color clusters, and Counter was used to count how many times that cluster was used in pixels in the analyzed set. In the end, we used Altair to visualize the 3x3 square and to save the graphics in SVG for a final touch in Illustrator. 
+      </p>
+      <p>
+        All <span style="background-color: #4180c5; padding: 2px 5px; border-radius: 1px;">code</span> and <span style="background-color: #4180c5; padding: 2px 5px; border-radius: 3px;">data</span> can be found <a href="https://seulink.com" target="_blank" rel="noopener noreferrer">here</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+  <script>
+    /*************
+    
+    This is the JavaScript that makes the scrolly work 
+    
+    *************/
+
+    /* 
+    This part attaches a scroll to the element with id="scrolly-images"    
+    */
+    (() => {
+      const scroller = scrollama()
+
+      scroller
+        .setup({
+          parent: document.querySelector("#scrolly-images"),
+          step: ".step",
+          offset: 0.6,
+          debug: false,
+        })
+        .onStepEnter(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepin", { detail: { direction: direction } })
+          element.dispatchEvent(event)
+        })
+        .onStepExit(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepout", { detail: { direction: direction } })
+          if (direction === "up" && element.previousElementSibling) {
+            const event = new CustomEvent("stepin", { detail: { direction: direction } })
+            element.previousElementSibling.dispatchEvent(event)
+          }
+        })
+
+      window.addEventListener("resize", scroller.resize)
+    })()
+
+    /*
+    This part sets up your actions. In this case, it's changing the image in the scrolly container.
+    */
+    d3.select("#step1").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image1.png")
+    })
+
+    d3.select("#step2").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image2.png")
+    })
+
+    d3.select("#step3").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image3.png")
+    })
+
+    d3.select("#step4").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image4.png")
+    })
+
+    d3.select("#step5").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image5.png")
+    })
+    d3.select("#step6").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image6.png")
+    })
+    d3.select("#step6").on('stepin', (e) => {
+    d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image6.png")
+     })
+
+    d3.select("#step7").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image7.png")
+    })
+
+    d3.select("#step8").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image8.png")
+    })
+
+    d3.select("#step9").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image9.png")
+    })
+
+    d3.select("#step10").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image10.png")
+    })
+
+    d3.select("#step11").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "image11.png")
+    })
+
+  </script>
+  <style>
+    /* Change this to adjust the padding between steps */
+    .step {
+      margin-bottom: 70vh;
+    }
+  </style>
+
+</body>
+
+</html>
