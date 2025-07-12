@@ -14,3 +14,16 @@ This work sought to find a way to analyze David Hockney's entire catalog of work
 **Palettes** The folder with all the palettes created in Python. The code is also available.
 
 **HTML and CSS** The html is in "index.html" and the respective css in "scrolly-style.css"
+
+
+# Python libraries used
+
+| Library  | Workflow             | Description                                                                                   |
+|----------|----------------------|-----------------------------------------------------------------------------------------------|
+| Pandas   | Scraping and Analysis| Essential for reading the created database and improving columns and the final analysis      |
+| KMeans   | Visualization and Analysis | Used to identify and create color clusters                                              |
+| Counter  | Analysis             | Used to count pixels per color cluster                                                       |
+| Altair   | Visualization        | Used to improve the appearance of charts and make them easier to save as SVG for Illustrator |
+
+
+**Illustrator** Illustrator was essential for creating images that later facilitated the transition effects in the template and for using the generated graphics in a more appealing way. 
