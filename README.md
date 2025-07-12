@@ -11,6 +11,6 @@ This work sought to find a way to analyze David Hockney's entire catalog of work
 
 **csv**The resulting files from the analysis.
 
-*Palettes** The folder with all the palettes created in Python. The code is also available.
+**Palettes** The folder with all the palettes created in Python. The code is also available.
 
-*HTML and CSS** The html is in "index.html" and the respective css in "scrolly-style.css"
+**HTML and CSS** The html is in "index.html" and the respective css in "scrolly-style.css"
